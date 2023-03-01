@@ -4,6 +4,7 @@ import json
 from django.db import models
 
 class Product(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length = 200)
     img = models.ImageField(upload_to = 'uploads/')
     price = models.IntegerField(default = 0)
@@ -15,7 +16,7 @@ class Product(models.Model):
     
 # Saving the products into the database
 
-def create_product(name, img, price, category):
+def create_product(id, name, img, price, category):
         """create a product and save it into the database
         
         parameters:
@@ -25,11 +26,18 @@ def create_product(name, img, price, category):
 
         returns the created product
         """
-        return Product.objects.create(name = name, img = img, price = price, category = category)
+        return Product.objects.create(
+        id = id, 
+        name = name,
+        img = img, 
+        price = price, 
+        category = category)
 
-response = requests.get("https://fakestoreapi.com/products")
-products = response.json()
+# Save the products in the database from external api
 
-for key, value in enumerate(products):
-      create_product(value["title"], value['image'], value['price'], value['category'])
+# response = requests.get("https://fakestoreapi.com/products")
+# products = response.json()
+
+# for key, value in enumerate(products):
+#       create_product(value['id'], value["title"], value['image'], value['price'], value['category'])
       
