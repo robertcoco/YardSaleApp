@@ -14,24 +14,24 @@ class IndexView(generic.ListView):
     context_object_name = "lasted_question_list"
 
     def get_queryset(self):
-        """Return the five last questions of the list"""
+        """Return all the products"""
         return Product
 
 class ClotheView(generic.ListView):
     template_name = "shop/clothes.html"
-    context_object_name = "lasted_question_list"
+    context_object_name = "product_clothing_list"
 
     def get_queryset(self):
-        """Return the five last questions of the list"""
-        return Product
+        """Return all the clothing products."""
+        return Product.objects.filter(category__endswith = "clothing")
     
 class ElectronicView(generic.ListView):
     template_name = "shop/electronics.html"
-    context_object_name = "lasted_question_list"
+    context_object_name = "product_electronics_list"
 
     def get_queryset(self):
-        """Return the five last questions of the list"""
-        return Product
+        """Return all the electronics products"""
+        return Product.objects.filter(category = "electronics")
     
 class FurnitureView(generic.ListView):
     template_name = "shop/furnitures.html"

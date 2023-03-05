@@ -20,6 +20,7 @@ def create_product(id, name, img, price, category):
         """create a product and save it into the database
         
         parameters:
+            - id: AutoField/primary_key
             - name: CharField/string
             - img: ImageField/img
             - price: IntegerField/int
@@ -40,4 +41,3 @@ def create_product(id, name, img, price, category):
 
 # for key, value in enumerate(products):
 #       create_product(value['id'], value["title"], value['image'], value['price'], value['category'])
-      

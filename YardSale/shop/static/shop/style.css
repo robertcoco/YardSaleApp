@@ -96,8 +96,9 @@ align-items: center;
 
 .desktop-menu {
     position: absolute;
-    top: 61px;
-    right:60px;
+    background-color: white;
+    top: 72px;
+    right:80px;
     width: 100px;
     height: auto;
     border: 1px solid var(--very-light-pink);
@@ -187,10 +188,11 @@ aside {
 
   /* Shoopping cart styles */
   #shoppingCart {
-    padding : 0 24px
+    padding : 10px 24px
   }
   .title-container {
     display: flex;
+    padding: 10px;
   }
   .title-container img {
     transform: rotate(180deg);
@@ -232,12 +234,13 @@ aside {
   .shopping-cart figure {
     margin: 0;
   }
-  .shopping-cart figure img {
+  .shopping-cart figure  img {
     width: 70px;
     height: 70px;
     border-radius: 20px;
     object-fit: cover;
   }
+
   .shopping-cart p:nth-child(2) {
     color: var(--very-light-pink);
   }
@@ -334,33 +337,50 @@ aside {
   /* Product list */
   .cards-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 240px);
+    grid-template-columns: repeat(auto-fill, 260px);
     gap: 26px;
     place-content: center;
     margin-top: 20px;
   }
   .product-card {
-    width: 240px;
-    border: 3px solid #aaa;
-    box-shadow: 1px 1px 1px 3px #ccc;
+    margin: 5px;
+    width: 260px;
+    padding: 5px;
+    border: 1px solid #aaa;
   }
-  .product-card img {
-    width: 240px;
+  .product-card  img {
+    width: 260px;
     height: 240px;
     object-fit: cover;
   }
+
   .product-card .product-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 12px;
   }
-  .product-card .product-info figure {
-    margin: 0;
+
+  .product-card .product-info figure button {
+    border: none;
+    background: transparent;
+    transition: all 1s;
   }
-  .product-card .product-info figure img {
+  .product-card .product-info figure button img {
+    margin: 0;
     width: 35px;
     height: 35px;
+  }
+  .product-card .product-info figure button:hover {
+    cursor: pointer;
+    border-radius: 30%;
+    background-color: var(--hospital-green);
+    
+  }
+
+  .product-card .product-info figure {
+    border-color: none ;
+    border-radius: 50%;
   }
   .product-card .product-info div p:nth-child(1) {
     font-weight: bold;

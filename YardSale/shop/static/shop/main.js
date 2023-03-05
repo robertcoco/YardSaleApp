@@ -16,6 +16,11 @@ productDetailIcon.addEventListener("click", closeProductDetail);
 
 function toggleDesktopMenu() {
     desktopMenu.classList.toggle("inactive");
+    const isShoppingCartClosed = shopCartMenu.classList.contains("inactive");
+
+    if (!isShoppingCartClosed) {
+        shopCartMenu.classList.add("inactive");
+    }
 }
 
 function toggleMobileMenu() {
@@ -30,7 +35,7 @@ function toggleMobileMenu() {
 function toggleshopCartMenuMenu(){
     const isMobileMenuClosed = menuMobile.classList.contains("inactive");
     const isProductDetailClosed = productDetail.classList.contains("inactive");
-    
+    const isDesktopMenuClosed = desktopMenu.classList.contains("inactive")
     // close the mobile menu when you click the shoppingCartIcon and open the shopCartMenu.
     // in order to open one we need to close the last one.
     if (!isMobileMenuClosed) {
@@ -39,6 +44,10 @@ function toggleshopCartMenuMenu(){
     
     if (!isProductDetailClosed) {
         productDetail.classList.add("inactive");
+    }
+
+    if (!isDesktopMenuClosed) {
+        desktopMenu.classList.add("inactive");
     }
 
     shopCartMenu.classList.toggle("inactive");
@@ -64,7 +73,7 @@ function closeProductDetail() {
     productDetail.classList.add("inactive");
 }
 
-
+// get the products from an external api.
 async function getProduct() 
 {
   let response = await fetch(`https://fakestoreapi.com/products`);
@@ -77,6 +86,7 @@ async function getProduct()
 const productList = getProduct();
 console.log(productList)
 
+// render the products in the web page.
 function renderProducts(arr) {
     for (product of arr) {
         // product = {product.name, produtc.price}
@@ -98,10 +108,12 @@ function renderProducts(arr) {
         const productName = document.createElement("p");
         productName.innerHTML = "$" + product.title;
         
+        const buttonImgCart = document.createElement("button")
         const productImgCart = document.createElement("img");
         const productFigure = document.createElement("figure");
         productImgCart.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/3523/3523885.png" );
-        productFigure.appendChild(productImgCart);
+        buttonImgCart.appendChild(productImgCart)
+        productFigure.appendChild(buttonImgCart);
         productInfoDiv.appendChild(productName);
         productInfoDiv.appendChild(productPrice);
         

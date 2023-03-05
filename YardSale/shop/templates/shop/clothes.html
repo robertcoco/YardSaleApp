@@ -1,1 +1,32 @@
+{% load static %}
 {% include 'shop/header.html' %}
+<body>
+    {% if product_clothing_list %}
+        <div class="cards-container">
+
+          {% for product in product_clothing_list  %}
+
+          <div class="product-card">
+            <img src="{{product.img}}" alt="bike">
+            <div class = "product-info">
+              <div >
+                <p>{{product.name}}</p>
+                <p>${{product.price}}</p>
+              </div>
+              <figure>
+                <button>
+                  <img src="{% static 'shop/icons/icon_shopping_cart.svg' %}" alt="close">
+                </button>
+              </figure>
+            </div>
+          </div>
+
+            {% endfor %}
+            {% else %}
+            <p>No clothing are available</p>
+
+          </div>
+          {% endif %}
+
+</body>
+</html>
