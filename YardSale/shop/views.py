@@ -3,19 +3,20 @@ import json
 import requests
 
 # django
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views import generic
 from .models import Product
+
 # Create your views here.
 
 class IndexView(generic.ListView):
     template_name = "shop/index.html"
-    context_object_name = "lasted_question_list"
+    context_object_name = "product_list"
 
     def get_queryset(self):
         """Return all the products"""
-        return Product
+        return Product.objects.all()
 
 class ClotheView(generic.ListView):
     template_name = "shop/clothes.html"
@@ -50,3 +51,9 @@ class ToyView(generic.ListView):
         return Product
 
 
+def product(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+
+    return render(request, "shop/productDetail.html", {
+        "product" : product
+    })

@@ -74,58 +74,58 @@ function closeProductDetail() {
 }
 
 // get the products from an external api.
-async function getProduct() 
-{
-  let response = await fetch(`https://fakestoreapi.com/products`);
-  let data = await response.json();
-  console.log(data)
-  renderProducts(data);
-  return data;
-}
+// async function getProduct() 
+// {
+//   let response = await fetch(`https://fakestoreapi.com/products`);
+//   let data = await response.json();
+//   console.log(data)
+//   //renderProducts(data);
+//   return data;
+// }
 
-const productList = getProduct();
-console.log(productList)
+// const productList = getProduct();
+// console.log(productList)
 
 // render the products in the web page.
-function renderProducts(arr) {
-    for (product of arr) {
-        // product = {product.name, produtc.price}
-        const productCard = document.createElement("div");
-        productCard.classList.add("product-card");
+// function renderProducts(arr) {
+//     for (product of arr) {
+//         // product = {product.name, produtc.price}
+//         const productCard = document.createElement("div");
+//         productCard.classList.add("product-card");
     
-        const productInfo = document.createElement("div");
-        productInfo.classList.add("product-info");
+//         const productInfo = document.createElement("div");
+//         productInfo.classList.add("product-info");
         
-        const productImg = document.createElement("img");
-        productImg.setAttribute("src", product.image);
-        productImg.addEventListener("click", openProductDetail);
+//         const productImg = document.createElement("img");
+//         productImg.setAttribute("src", product.image);
+//         productImg.addEventListener("click", openProductDetail);
         
-        const productInfoDiv = document.createElement("div");
+//         const productInfoDiv = document.createElement("div");
         
-        const productPrice = document.createElement("p");
-        productPrice.innerHTML = "$" + product.price;
+//         const productPrice = document.createElement("p");
+//         productPrice.innerHTML = "$" + product.price;
         
-        const productName = document.createElement("p");
-        productName.innerHTML = "$" + product.title;
+//         const productName = document.createElement("p");
+//         productName.innerHTML = "$" + product.title;
         
-        const buttonImgCart = document.createElement("button")
-        const productImgCart = document.createElement("img");
-        const productFigure = document.createElement("figure");
-        productImgCart.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/3523/3523885.png" );
-        buttonImgCart.appendChild(productImgCart)
-        productFigure.appendChild(buttonImgCart);
-        productInfoDiv.appendChild(productName);
-        productInfoDiv.appendChild(productPrice);
+//         const buttonImgCart = document.createElement("button")
+//         const productImgCart = document.createElement("img");
+//         const productFigure = document.createElement("figure");
+//         productImgCart.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/3523/3523885.png" );
+//         buttonImgCart.appendChild(productImgCart)
+//         productFigure.appendChild(buttonImgCart);
+//         productInfoDiv.appendChild(productName);
+//         productInfoDiv.appendChild(productPrice);
         
-        productInfo.appendChild(productInfoDiv);
-        productInfo.appendChild(productFigure);
+//         productInfo.appendChild(productInfoDiv);
+//         productInfo.appendChild(productFigure);
     
-        productCard.appendChild(productImg);
-        productCard.appendChild(productInfo);
+//         productCard.appendChild(productImg);
+//         productCard.appendChild(productInfo);
     
-        cardsContainer.appendChild(productCard);
+//         cardsContainer.appendChild(productCard);
         
-    }
-}
+//     }
+// }
 
 
