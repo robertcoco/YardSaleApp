@@ -2,8 +2,11 @@
 {% include 'shop/header.html' %}
 
 <body>
-    <aside id = "productDetail" >
-        <img src="{{product.img}}" alt="bike">
+  <div class="box">
+    <div id = "productDetail" >
+        <div class = "imgContainer">
+          <img src="{{product.img}}" alt="bike">
+        </div>
         <div class="product-info">
           <p>${{product.price}} US</p>
           <p>{{product.name}}</p>
@@ -14,6 +17,6 @@
             Add to cart
           </button>
         </div>
-      </aside>
+    </div>
+  </div>
 </body>
-

@@ -13,6 +13,7 @@
 body {
 margin: 0;
 font-family: 'Quicksand', sans-serif;
+background-color: #FFFFFF;
 }
 
 
@@ -23,6 +24,7 @@ display: flex;
 justify-content: space-between;
 padding: 0px;
 border-bottom: 1px solid var(--very-light-pink);
+background-color: white;
 }
 
 nav img {
@@ -188,6 +190,7 @@ aside {
 
   /* Shoopping cart styles */
   #shoppingCart {
+    background-color: #eeeeee;
     padding : 10px 24px
   }
   .title-container {
@@ -259,7 +262,34 @@ aside {
     height: 50px;
   }
  
-  /* product detail */
+  /* product detail and box of the product-detail */
+  .box {
+    margin: auto;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 700px;
+    height: 550px;
+    background-color: #eeeeee;
+  }
+
+  .imgContainer {
+    border: 1px solid #eeeeee
+  }
+
+  #productDetail {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 650px;
+    height: 400px;
+    margin: 0 60vw;
+    background-color: #FFFFFF;
+  }
   .aside-close {
     background: var(--white);
     width: 14px;
@@ -287,6 +317,19 @@ aside {
   .product-detail-close:hover {
     cursor: pointer;
 
+  }
+
+  #productDetail > div:first-child {
+    width: 250px;
+  }
+
+  #productDetail > div:nth-child(2) {
+    width: 250px;
+  }
+
+  #productDetail div > img:first-child {
+    width: 200px;
+    height: 170px;
   }
   #productDetail > img:nth-child(2) {
     width: 100%;
@@ -376,6 +419,11 @@ aside {
   .product-card .product-info figure {
     margin: 0;
   }
+
+  .product-card .product-info figure button {
+    background-color: transparent;
+    border: none;
+  }
   .product-card .product-info figure img {
     width: 35px;
     height: 35px;
@@ -387,10 +435,10 @@ aside {
     margin-bottom: 4px;
   }
   .product-card .product-info div p:nth-child(2) {
-    font-size: var(--sm);
+    font-size: var(--md);
     margin-top: 0;
     margin-bottom: 0;
-    color: var(--very-light-pink);
+    color: var(--hospital-green);
   }
   
 
