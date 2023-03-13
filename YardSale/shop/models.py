@@ -13,9 +13,7 @@ class Product(models.Model):
     def __str__(self):
           return self.name
 
-    
 # Saving the products into the database
-
 def create_product(id, name, img, price, category):
         """create a product and save it into the database
         

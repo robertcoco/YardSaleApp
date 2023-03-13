@@ -1,13 +1,19 @@
 {% load static %}
 {% include 'shop/header.html' %}
 <body>
+    {% include 'shop/shoppingCart.html' %}
     {% if product_electronics_list %}
         <div class="cards-container">
-
           {% for electronic in product_electronics_list  %}
-
+          
           <div class="product-card">
-            <img src="{{electronic.img}}" alt="bike">
+            <form action="{% url 'shop:detail' electronic.id %}" method= "post">
+              {% csrf_token %}
+              <button>
+                <img src="{{electronic.img}}" alt="bike">
+              </button>
+              <input type="hidden" name="product" value = "electronic.id">
+            </form>
             <div class = "product-info">
               <div >
                 <p>{{electronic.name}}</p>
@@ -26,7 +32,7 @@
             <p>No electronics are available</p>
 
           </div>
-          {% endif %}
-
+    {% endif %}
+    <script src="{% static 'shop/main.js' %}"></script>
 </body>
 </html>

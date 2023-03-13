@@ -1,6 +1,6 @@
 const menuEmail = document.querySelector(".navbar-email");
 const shopMenuIcon = document.querySelector(".navbar-shopping-cart");
-const productDetailIcon = document.querySelector(".product-detail-close");
+//const productDetailIcon = document.querySelector(".product-detail-close");
 
 const desktopMenu = document.querySelector(".desktop-menu");
 const menuMobile = document.querySelector(".mobile-menu");
@@ -12,7 +12,8 @@ const productDetail = document.querySelector("#productDetail");
 menuEmail.addEventListener("click", toggleDesktopMenu);
 buttonMenuMobile.addEventListener("click", toggleMobileMenu);
 shopMenuIcon.addEventListener("click", toggleshopCartMenuMenu);
-productDetailIcon.addEventListener("click", closeProductDetail);
+
+//productDetailIcon.addEventListener("click", closeProductDetail);
 
 function toggleDesktopMenu() {
     desktopMenu.classList.toggle("inactive");
@@ -34,16 +35,11 @@ function toggleMobileMenu() {
 
 function toggleshopCartMenuMenu(){
     const isMobileMenuClosed = menuMobile.classList.contains("inactive");
-    const isProductDetailClosed = productDetail.classList.contains("inactive");
     const isDesktopMenuClosed = desktopMenu.classList.contains("inactive")
     // close the mobile menu when you click the shoppingCartIcon and open the shopCartMenu.
     // in order to open one we need to close the last one.
     if (!isMobileMenuClosed) {
         menuMobile.classList.add("inactive");
-    }
-    
-    if (!isProductDetailClosed) {
-        productDetail.classList.add("inactive");
     }
 
     if (!isDesktopMenuClosed) {
@@ -54,24 +50,24 @@ function toggleshopCartMenuMenu(){
 
 }
 
-function openProductDetail() {
-    const isProductDetailClosed = productDetail.classList.contains("inactive");
-    const isShopCartMenuOpened = !shopCartMenu.classList.contains("inactive");
+// function openProductDetail() {
+//     const isProductDetailClosed = productDetail.classList.contains("inactive");
+//     const isShopCartMenuOpened = !shopCartMenu.classList.contains("inactive");
 
-    if (!isProductDetailClosed) {
-        productDetail.classList.add("inactive");
-    }
+//     if (!isProductDetailClosed) {
+//         productDetail.classList.add("inactive");
+//     }
 
-    if (isShopCartMenuOpened) {
-        shopCartMenu.classList.add("inactive");
-    }
+//     if (isShopCartMenuOpened) {
+//         shopCartMenu.classList.add("inactive");
+//     }
 
-    productDetail.classList.remove("inactive");
-}
+//     productDetail.classList.remove("inactive");
+// }
 
-function closeProductDetail() {
-    productDetail.classList.add("inactive");
-}
+// function closeProductDetail() {
+//     productDetail.classList.add("inactive");
+// }
 
 // get the products from an external api.
 // async function getProduct() 

@@ -3,9 +3,12 @@ import json
 import requests
 
 # django
-from django.shortcuts import render, get_object_or_404
+from .forms import NewUserForm
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views import generic
+from django.contrib import messages
+from django.contrib.auth import login
 from .models import Product
 
 # Create your views here.
@@ -57,3 +60,15 @@ def product(request, product_id):
     return render(request, "shop/productDetail.html", {
         "product" : product
     })
+
+def register_request(request):
+    if request.method == "POST":
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, "Registation successful" )
+            login(request, user)
+            return redirect("shop:index")
+        messages.error(request, "Unsuccessful resgistration. Invalid information")
+    form = NewUserForm()
+    return render(request, "shop/register.html", {"register_form" : form})

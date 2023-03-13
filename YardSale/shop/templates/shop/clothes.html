@@ -1,13 +1,19 @@
 {% load static %}
 {% include 'shop/header.html' %}
 <body>
+  {% include 'shop/shoppingCart.html' %}
     {% if product_clothing_list %}
         <div class="cards-container">
-
           {% for product in product_clothing_list  %}
 
           <div class="product-card">
-            <img src="{{product.img}}" alt="bike">
+            <form action="{% url 'shop:detail' product.id %}" method= "post">
+              {% csrf_token %}
+              <button>
+                <img src="{{product.img}}" alt="bike">
+              </button>
+              <input type="hidden" name="product" value = "product.id">
+            </form>
             <div class = "product-info">
               <div >
                 <p>{{product.name}}</p>
@@ -24,9 +30,8 @@
             {% endfor %}
             {% else %}
             <p>No clothing are available</p>
-
           </div>
-          {% endif %}
-
+    {% endif %}
+    <script src="{% static 'shop/main.js' %}"></script>
 </body>
 </html>
