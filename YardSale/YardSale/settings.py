@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'shop.middleware.AuthanticatedUserMiddleware',
 ]
 
 ROOT_URLCONF = 'YardSale.urls'
@@ -133,3 +134,7 @@ MESSAGE_TAGS = {
         messages.WARNING: 'alert-warning',
         messages.ERROR: 'alert-danger',
 }
+
+
+LOGIN_REDIRECT_URL = "shop:index"
+LOGOUT_REDIRECT_URL = "shop:login" 

@@ -12,8 +12,26 @@
 	{% include 'shop/messages.html' %}
 	<form method="POST">
 		{% csrf_token %}
-		{{ register_form}}
-		<button class="btn btn-primary" type="submit">Register</button>
+		<label for="username">username</label>
+		<input type="text" name="username" id="">
+		<br>
+		<label for="fname">first name</label>
+		<input type="text" name="fname" id="">
+		<br>
+		<label for="lname">last name</label>
+		<input type="text" name="lname" id="">
+		<br>
+		<label for="email">email</label>
+		<input type="email" name="email" id="">
+		<br>
+		<label for="password1">password</label>
+		<input type="password" name="password1" id="">
+		<br>
+		<label for="password2">password confirmation</label>
+		<input type="password" name="password2" id="">
+		<br>
+		<button>Sign up</button>
 	</form>
 	<p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
+	<a href="{% url 'shop:login' %}">Do you have an account?. Login</a>
 {% endblock  %}

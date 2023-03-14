@@ -8,7 +8,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views import generic
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from .models import Product
 
 # Create your views here.
@@ -63,12 +64,42 @@ def product(request, product_id):
 
 def register_request(request):
     if request.method == "POST":
-        form = NewUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            messages.success(request, "Registation successful" )
+        username = request.POST['username']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        email = request.POST['email']
+
+        myuser = User.objects.create_user(username, email, password1)
+        myuser.first_name = fname
+        myuser.last_name = lname
+
+        myuser.save()
+        return redirect("shop:login")
+
+    return render(request, "shop/register.html")
+
+def user_login(request):
+    if request.method == "POST":
+        products = Product.objects.all()
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username = username, password = password)
+
+        if user is not None:
+            name = user.first_name
             login(request, user)
             return redirect("shop:index")
-        messages.error(request, "Unsuccessful resgistration. Invalid information")
-    form = NewUserForm()
-    return render(request, "shop/register.html", {"register_form" : form})
+
+        else:
+            messages.error(request, "Bad credentials")
+            return redirect("shop:login")  
+  
+    return render(request, "shop/login.html")
+
+
+def user_logout(request):
+    logout(request)
+    return redirect("shop:login")
