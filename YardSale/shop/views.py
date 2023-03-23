@@ -1,9 +1,9 @@
 # python build in libraries
 import json
-import requests
 
 # django
 from .forms import NewUserForm
+from django.contrib.auth.views import logout_then_login
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views import generic
@@ -11,10 +11,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import Product
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import auth
+
 
 # Create your views here.
 
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
+    login_url = "/shop/login/"
     template_name = "shop/index.html"
     context_object_name = "product_list"
 
@@ -101,5 +105,6 @@ def user_login(request):
 
 
 def user_logout(request):
-    logout(request)
-    return redirect("shop:login")
+    logout_then_login(request,login_url='shop/login')
+    return redirect ("shop:login")
+  # Redirect to a success page.

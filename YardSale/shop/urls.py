@@ -11,5 +11,5 @@ urlpatterns = [
     path("toys/", views.ElectronicView.as_view(), name = "toys"),
     path("register/", views.register_request, name = "register"),
     path("login/", views.user_login, name = "login"),
-    path("logout/", views.user_login, name = "logout")
+    path('logout/', views.user_logout, name= "logout"),
 ]

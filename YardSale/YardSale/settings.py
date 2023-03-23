@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'crispy_forms',
+    'django.contrib.staticfiles'
 ]
 
 
@@ -50,7 +49,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'shop.middleware.AuthanticatedUserMiddleware',
 ]
 
 ROOT_URLCONF = 'YardSale.urls'
@@ -135,6 +133,4 @@ MESSAGE_TAGS = {
         messages.ERROR: 'alert-danger',
 }
 
-
-LOGIN_REDIRECT_URL = "shop:index"
-LOGOUT_REDIRECT_URL = "shop:login" 
+LOGOUT_REDIRECT_URL = 'logout'

@@ -25,6 +25,7 @@ justify-content: space-between;
 padding: 0px;
 border-bottom: 1px solid var(--very-light-pink);
 background-color: white;
+height: 70px;
 }
 
 nav img {
@@ -100,7 +101,7 @@ align-items: center;
     position: absolute;
     top: 75px;
     right:75px;
-    width: 100px;
+    width: 150px;
     height: auto;
     border: 1px solid var(--very-light-pink);
     border-radius: 6px;
@@ -454,7 +455,6 @@ aside {
     color: var(--hospital-green);
   }
   
-
 @media (max-width: 640px) {
     .menu {
         display: block;
