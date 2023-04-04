@@ -1,30 +1,41 @@
 # python build in libraries
-import json
 
-# django
-from .forms import NewUserForm
+# 
 from django.contrib.auth.views import logout_then_login
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.views import generic
+from django.urls import reverse
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from .models import Product
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import auth
-
+from .models import Product, ItemCarrito, Carrito
+from social_django.utils import load_strategy
+from social_django.views import _do_login
+from social_django.utils import load_strategy, load_backend
+from social_core.exceptions import AuthCanceled
 
 # Create your views here.
 
-class IndexView(LoginRequiredMixin, generic.ListView):
-    login_url = "/shop/login/"
-    template_name = "shop/index.html"
-    context_object_name = "product_list"
+def google_auth(request):
+    strategy = load_strategy(request)
+    backend = 'google-oauth2'
+    return _do_login(request, strategy, backend)
 
-    def get_queryset(self):
-        """Return all the products"""
-        return Product.objects.all()
+def home(request):
+    product_list = Product.objects.all()
+    itemCarrito = ItemCarrito.objects.all()
+    if request.user.is_authenticated:
+        username = request.user.username
+        usuario = User.objects.get(username = username)
+        carrito = Carrito.objects.filter(usuario = usuario)
+        total_de_productos = itemCarrito.count()
+
+    return render(request, "shop/index.html", {
+        'product_list': product_list,
+        'ItemsCarrito': itemCarrito,
+        'total': total_de_productos
+        })
 
 class ClotheView(generic.ListView):
     template_name = "shop/clothes.html"
@@ -61,9 +72,10 @@ class ToyView(generic.ListView):
 
 def product(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
-
+    itemCarrito = ItemCarrito.objects.all()
     return render(request, "shop/productDetail.html", {
-        "product" : product
+        "product" : product,
+        "ItemsCarrito": itemCarrito
     })
 
 def register_request(request):
@@ -80,13 +92,34 @@ def register_request(request):
         myuser.last_name = lname
 
         myuser.save()
-        return redirect("shop:login")
+
+    else:
+        # Mostrar el formulario de registro y el botón de inicio de sesión de Google
+        context = {}
+        context['google_login_url'] = (
+            "{% url 'social:begin' 'google-oauth2' %}?next={% url 'shop:register' %}"
+        )
+        return render(request, "shop/register.html", context)
+
+    # Comprobar si el usuario se autenticó con Google
+    strategy = load_strategy(request)
+    backend = load_backend(strategy, 'google-oauth2', redirect_uri=None)
+
+    try:
+        social = request.session['partial_pipeline']['kwargs']['social']
+        user = backend.do_auth(social)
+
+        # Si el usuario se autenticó con Google, redirigir a una página de confirmación
+        return redirect('shop:login')
+
+    except (KeyError, AuthCanceled):
+        pass
 
     return render(request, "shop/register.html")
 
+
 def user_login(request):
     if request.method == "POST":
-        products = Product.objects.all()
         username = request.POST['username']
         password = request.POST['password']
 
@@ -105,6 +138,23 @@ def user_login(request):
 
 
 def user_logout(request):
-    logout_then_login(request,login_url='shop/login')
-    return redirect ("shop:login")
+    return logout_then_login(request, login_url="http://localhost:8000/shop/login")
   # Redirect to a success page.
+
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    if request.method == "POST":
+        username = request.POST['username']
+
+    usuario = User.objects.get(username=username)
+    carrito = Carrito.objects.create(usuario=usuario)
+    producto = Product.objects.get(name=product.name)
+    item = ItemCarrito.objects.create(producto=producto, carrito=carrito, cantidad=1, precio_unitario=producto.price)
+    return HttpResponseRedirect(reverse("shop:detail", args = (product.id,)))
+
+def eliminar_item(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        item = ItemCarrito.objects.get(id=item_id)
+        item.delete()
+    return redirect('shop:index')

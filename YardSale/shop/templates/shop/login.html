@@ -5,8 +5,11 @@
     <link rel="stylesheet" href="{% static 'shop/login.css' %}">
 {% endblock css_external %}
 
+{% include 'shop/messages.html' %}
+
 {% block content %}
 <body>
+    {% include 'shop/messages.html' %}        
     <form class = "form" action="{% url 'shop:login' %}" method = "POST">
         {% csrf_token %}
         <div class = "fill">
@@ -29,6 +32,7 @@
             <a class= "sign_up" href="{% url 'shop:register' %}">Sign up</a>
         </div>
     </form>
+
 </body>
 </html>
 {% endblock content %}

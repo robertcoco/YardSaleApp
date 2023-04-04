@@ -5,7 +5,6 @@
     {% if product_clothing_list %}
         <div class="cards-container">
           {% for product in product_clothing_list  %}
-
           <div class="product-card">
             <form action="{% url 'shop:detail' product.id %}" method= "post">
               {% csrf_token %}
@@ -26,9 +25,8 @@
               </figure>
             </div>
           </div>
-
-            {% endfor %}
-            {% else %}
+          {% endfor %}
+    {% else %}
             <p>No clothing are available</p>
           </div>
     {% endif %}

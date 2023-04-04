@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+  {% if user.social_auth %}
+    <form method="POST" action="{% url 'seleccionar_cuenta_google' %}">
+      {% csrf_token %}
+      <select name="cuenta_google">
+        {% for auth in user.social_auth %}
+          {% if auth.provider == "google-oauth2" %}
+            <option value="{{ auth.id }}">{{ auth.extra_data.email }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <button type="submit">Seleccionar cuenta</button>
+    </form>
+  {% endif %}
+{% endif %}

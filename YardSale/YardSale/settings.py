@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'social_django',
 ]
 
 
@@ -49,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+    'shop.middleware.LoginRequiredMiddleware'
 ]
 
 ROOT_URLCONF = 'YardSale.urls'
@@ -64,10 +67,21 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # <-- Here
+                'social_django.context_processors.login_redirect', # <-- Here
             ],
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 
 WSGI_APPLICATION = 'YardSale.wsgi.application'
 
@@ -133,4 +147,11 @@ MESSAGE_TAGS = {
         messages.ERROR: 'alert-danger',
 }
 
-LOGOUT_REDIRECT_URL = 'logout'
+LOGIN_URL = 'login'
+SOCIAL_AUTH_FACEBOOK_KEY = '1020885318881585'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd1c41757543f8bea48deecfbbc383562'  # App Secret
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '832957171751-v3htrqpna63n7hikp3q11odem1uvhkhk.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {'prompt': 'select_account','auth_type': 'request'}
+

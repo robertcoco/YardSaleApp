@@ -2,8 +2,7 @@
 {% include 'shop/header.html' %}
 <body>
   {% include 'shop/shoppingCart.html' %}
-
-  {% include 'shop/messages.html' %}  
+  
   {% if user.is_authenticated %}
   <h3>Hello: {{user.username}}</h3>
   {% endif %}
@@ -27,11 +26,15 @@
               <p>{{product.name}}</p>
               <p>${{product.price}}</p>
             </div>
-            <figure>
-              <button>
-                <img src="{% static 'shop/icons/icon_shopping_cart.svg' %}" alt="close">
-              </button>
-            </figure>
+            <form action="{% url 'shop:addCart' product.id %}" method = "POST">
+              {% csrf_token %}
+              <input type="hidden" name="username" value = "{{user.username}}">
+              <figure>
+                <button>
+                  <img src="{% static 'shop/icons/bt_add_to_cart.svg' %}" alt="close">
+                </button>
+              </figure>
+            </form>
           </div>
         </div>
 
@@ -41,7 +44,7 @@
         </div>
         {% endif %}
   </section>
-
+{% include 'shop/footer.html' %}
 <script src="{% static 'shop/main.js' %}"></script>
 </body>
 </html>

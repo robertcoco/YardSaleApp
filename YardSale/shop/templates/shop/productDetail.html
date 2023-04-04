@@ -1,23 +1,26 @@
-{% load static %}
-{% include 'shop/header.html' %}
-
+{% load static %} {% include 'shop/header.html' %}
 <body>
   {% include 'shop/shoppingCart.html' %}
   <div class="box">
-    <div id = "productDetail" >
-        <div class = "imgContainer">
-          <img src="{{product.img}}" alt="bike">
-        </div>
-        <div class="product-info">
-          <p>${{product.price}} US</p>
-          <p>{{product.name}}</p>
-          <p>With its practical position, this
-             bike also fulfills a decorative function, add your hall or workspace.</p>
-          <button class="primary-button add-to-cart-button">
-            <img src="{% static 'shop/icons/bt_add_to_cart.svg' %}" alt="add to cart">
-            Add to cart
-          </button>
-        </div>
+    <div id="productDetail">
+      <div class="imgContainer">
+        <img src="{{product.img}}" alt="bike" />
+      </div>
+      <div class="product-info">
+        <p>${{product.price}} US</p>
+        <p>{{product.name}}</p>
+        <p>
+          With its practical position, this bike also fulfills a decorative
+          function, add your hall or workspace.
+        </p>
+        <button class="primary-button add-to-cart-button">
+          <img
+            src="{% static 'shop/icons/bt_add_to_cart.svg' %}"
+            alt="add to cart"
+          />
+          Add to cart
+        </button>
+      </div>
     </div>
   </div>
   <script src="{% static 'shop/main.js' %}"></script>

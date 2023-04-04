@@ -244,6 +244,32 @@ aside {
     border-radius: 20px;
     object-fit: cover;
   }
+
+  .buttonForm {
+     /* Estilos previos */
+    position: relative;
+    background-color: var(--hospital-green);
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+  }
+
+  .buttonForm img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
   .shopping-cart p:nth-child(2) {
     color: var(--very-light-pink);
   }
@@ -408,10 +434,12 @@ aside {
     cursor: pointer
   }
   .product-card form button img {
-    width: 270px;
+    width: 250px;
     height: 240px;
     object-fit: cover;
   }
+
+  
 
   .product-card  img {
     width: 275px;
@@ -453,6 +481,13 @@ aside {
     margin-top: 0;
     margin-bottom: 0;
     color: var(--hospital-green);
+  }
+
+  .footer{
+    height: 200px;
+    margin-top: 20px;
+    padding: 20px;
+    background: black;
   }
   
 @media (max-width: 640px) {
