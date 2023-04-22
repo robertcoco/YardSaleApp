@@ -18,7 +18,6 @@ background-color: #FFFFFF;
 
 
 /* Nav bar (general) */
-
 nav {
 display: flex;
 justify-content: space-between;
@@ -74,6 +73,7 @@ cursor: pointer
 }
 .navbar-shopping-cart {
 position: relative;
+cursor: pointer;
 }
 .navbar-shopping-cart div {
 width: 16px;
@@ -94,7 +94,24 @@ align-items: center;
     display: none
 }
 
-
+/* Navigator */
+.navigator {
+  display: flex;
+  margin: 10px;
+  justify-content: center;
+}
+.key_word {
+  width: 400px;
+  border: 1px solid #ACD9B2
+}
+.search {
+  border: none;
+  background-color: transparent;
+}
+.search img {
+  width: 25px;
+  height: 25px;
+}
 /* Desktop menu */
 
 .desktop-menu {
@@ -190,10 +207,26 @@ aside {
   }
 
   /* Shoopping cart styles */
+
   #shoppingCart {
     background-color: #FFFFFF;
     padding : 10px 24px
   }
+
+  .delete_product{
+    height: 50px;
+  }
+
+  #shoppingCart1 {
+    background-color: #FFFFFF;
+    padding : 10px 24px
+  }
+
+  .total {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .title-container {
     display: flex;
     padding: 10px;
@@ -205,6 +238,11 @@ aside {
   .title {
     font-size: var(--lg);
     font-weight: bold;
+    text-decoration: none;
+  }
+  .title a {
+    color: #ACD9B2;
+    text-decoration: none;
   }
   .order {
     display: grid;
@@ -235,6 +273,13 @@ aside {
     margin-bottom: 24px;
     align-items: center;
   }
+  .DeleteForm {
+    display: flex;
+    height: 70px;
+    width: 30px;
+    align-items: center;
+    padding-bottom: 10px;
+  }
   .shopping-cart figure {
     margin: 0;
   }
@@ -256,7 +301,6 @@ aside {
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
-    margin: 4px 2px;
     cursor: pointer;
     border-radius: 50%;
     width: 30px;
@@ -265,6 +309,8 @@ aside {
 
   .buttonForm img {
     position: absolute;
+    width: 10px;
+    height: 10px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -423,8 +469,17 @@ aside {
     padding: 5px;
     width: 275px;
     border: 1px solid #bbbb;
+    transition: all .5s;
   }
 
+  .product-card:hover {
+    border: 1px solid #ACD9B2;
+  }
+
+  .product-card form {
+    display: flex;
+    justify-content: center;
+  }
   .product-card form button {
     background-color: transparent;
     border: none
@@ -434,7 +489,7 @@ aside {
     cursor: pointer
   }
   .product-card form button img {
-    width: 250px;
+    width: 100%;
     height: 240px;
     object-fit: cover;
   }

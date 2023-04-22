@@ -20,9 +20,13 @@ class Carrito(models.Model):
 
     def __str__(self):
         return f"Carrito de {self.usuario.username}"
+    
     @property
     def total(self):
         return sum(item.total for item in self.items.all())
+
+    def get_total(self):
+        return self.total
 
 class ItemCarrito(models.Model):
     producto = models.ForeignKey(Product, on_delete=models.CASCADE)

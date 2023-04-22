@@ -1,5 +1,6 @@
 # python build in libraries
-
+from functools import reduce
+from operator import or_
 # 
 from django.contrib.auth.views import logout_then_login
 from django.shortcuts import render, get_object_or_404, redirect
@@ -10,26 +11,46 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .models import Product, ItemCarrito, Carrito
-from social_django.utils import load_strategy
-from social_django.views import _do_login
-from social_django.utils import load_strategy, load_backend
-from social_core.exceptions import AuthCanceled
-
+from django.db.models import Q
+from django.contrib.postgres.search import SearchQuery, SearchVector
 # Create your views here.
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.views import OAuth2CallbackView
 
-def google_auth(request):
-    strategy = load_strategy(request)
-    backend = 'google-oauth2'
-    return _do_login(request, strategy, backend)
+class GoogleLoginCallbackView(OAuth2CallbackView, generic.View):
+    adapter_class = GoogleOAuth2Adapter
+    client_class = OAuth2Client
 
 def home(request):
-    product_list = Product.objects.all()
+    query = request.GET.get('q')
+    if query:
+        # Dividir la cadena de consulta en palabras individuales
+        keywords = query.split()
+
+        # Lista de campos en los que se buscará
+        fields = ['name__icontains', 'category__icontains']
+
+        # Lista de consultas de búsqueda que se combinarán con OR
+        queries = [Q(**{field: keyword}) for keyword in keywords for field in fields]
+
+        # Combinar todas las consultas usando el operador OR
+        product_list = Product.objects.filter(reduce(or_, queries))
+
+    else:
+        product_list = Product.objects.all()
+
+    # Resto del código de la vista
+
     itemCarrito = ItemCarrito.objects.all()
+
     if request.user.is_authenticated:
         username = request.user.username
         usuario = User.objects.get(username = username)
         carrito = Carrito.objects.filter(usuario = usuario)
-        total_de_productos = itemCarrito.count()
+
+    total_de_productos = itemCarrito.count()
 
     return render(request, "shop/index.html", {
         'product_list': product_list,
@@ -37,108 +58,81 @@ def home(request):
         'total': total_de_productos
         })
 
-class ClotheView(generic.ListView):
-    template_name = "shop/clothes.html"
-    context_object_name = "product_clothing_list"
+def clothing(request):
+    itemCarrito = ItemCarrito.objects.all()
+    total_de_productos = itemCarrito.count()
+    product_clothing_list = Product.objects.filter(category__endswith = "clothing")
 
-    def get_queryset(self):
-        """Return all the clothing products."""
-        return Product.objects.filter(category__endswith = "clothing")
+    return render(request, "shop/clothes.html", {
+        'product_clothing_list': product_clothing_list,
+        'ItemsCarrito': itemCarrito,
+        'total': total_de_productos
+        })
     
-class ElectronicView(generic.ListView):
-    template_name = "shop/electronics.html"
-    context_object_name = "product_electronics_list"
+def electronic(request):
+    itemCarrito = ItemCarrito.objects.all()
+    total_de_productos = itemCarrito.count()
+    product_electronics_list = Product.objects.filter(category = "electronics")
 
-    def get_queryset(self):
-        """Return all the electronics products"""
-        return Product.objects.filter(category = "electronics")
+    return render(request, "shop/electronics.html", {
+        'product_electronics_list': product_electronics_list,
+        'ItemsCarrito': itemCarrito,
+        'total': total_de_productos
+        })
     
-class FurnitureView(generic.ListView):
-    template_name = "shop/furnitures.html"
-    context_object_name = "lasted_question_list"
-
-    def get_queryset(self):
-        """Return the five last questions of the list"""
-        return Product
-    
-class ToyView(generic.ListView):
-    template_name = "shop/toys.html"
-    context_object_name = "lasted_question_list"
-
-    def get_queryset(self):
-        """Return the five last questions of the list"""
-        return Product
-
-
 def product(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     itemCarrito = ItemCarrito.objects.all()
+    total = itemCarrito.count()
     return render(request, "shop/productDetail.html", {
         "product" : product,
-        "ItemsCarrito": itemCarrito
+        "ItemsCarrito": itemCarrito,
+        "total": total 
     })
 
 def register_request(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        fname = request.POST['fname']
-        lname = request.POST['lname']
-        email = request.POST['email']
-
-        myuser = User.objects.create_user(username, email, password1)
-        myuser.first_name = fname
-        myuser.last_name = lname
-
-        myuser.save()
-
-    else:
-        # Mostrar el formulario de registro y el botón de inicio de sesión de Google
-        context = {}
-        context['google_login_url'] = (
-            "{% url 'social:begin' 'google-oauth2' %}?next={% url 'shop:register' %}"
-        )
-        return render(request, "shop/register.html", context)
-
-    # Comprobar si el usuario se autenticó con Google
-    strategy = load_strategy(request)
-    backend = load_backend(strategy, 'google-oauth2', redirect_uri=None)
-
-    try:
-        social = request.session['partial_pipeline']['kwargs']['social']
-        user = backend.do_auth(social)
-
-        # Si el usuario se autenticó con Google, redirigir a una página de confirmación
-        return redirect('shop:login')
-
-    except (KeyError, AuthCanceled):
-        pass
-
-    return render(request, "shop/register.html")
-
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        
+        # Verificar que las contraseñas coincidan
+        if password1 != password2:
+            messages.error(request, 'Las contraseñas no coinciden')
+            return redirect('shop:register')
+        
+        # Iniciar sesión y redirigir al usuario a la página de inicio
+        user = authenticate(request, username=username, password=password1)
+        login(request, user)
+        messages.success(request, '¡Registro exitoso!')
+        return redirect('shop:index')
+    
+    return render(request, 'shop/register.html')
 
 def user_login(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
 
-        user = authenticate(request, username = username, password = password)
+        user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            name = user.first_name
+            # Iniciar sesión con éxito
             login(request, user)
             return redirect("shop:index")
-
+        
         else:
-            messages.error(request, "Bad credentials")
-            return redirect("shop:login")  
-  
+            # Si el usuario no existe y no ha iniciado sesión con Facebook o Google, mostrar mensaje de error
+            messages.error(request, "Credenciales incorrectas")
+            return redirect("shop:login")
+            
     return render(request, "shop/login.html")
 
-
 def user_logout(request):
-    return logout_then_login(request, login_url="http://localhost:8000/shop/login")
+    return logout_then_login(request, login_url="http://localhost:8000/accounts/login")
   # Redirect to a success page.
 
 def add_to_cart(request, product_id):
@@ -147,7 +141,7 @@ def add_to_cart(request, product_id):
         username = request.POST['username']
 
     usuario = User.objects.get(username=username)
-    carrito = Carrito.objects.create(usuario=usuario)
+    carrito = Carrito.objects.get(usuario=usuario)
     producto = Product.objects.get(name=product.name)
     item = ItemCarrito.objects.create(producto=producto, carrito=carrito, cantidad=1, precio_unitario=producto.price)
     return HttpResponseRedirect(reverse("shop:detail", args = (product.id,)))
@@ -158,3 +152,23 @@ def eliminar_item(request):
         item = ItemCarrito.objects.get(id=item_id)
         item.delete()
     return redirect('shop:index')
+
+def shopping_page(request):
+    item_carrito = ItemCarrito.objects.all()
+
+    if request.user.is_authenticated:
+        username = request.user.username
+        usuario = User.objects.get(username = username)
+
+    carrito = Carrito.objects.get(usuario=usuario)
+    total_price = carrito.get_total()
+    total_de_productos = item_carrito.count()
+
+    return render(request, "shop/shoppingPage.html", {
+        'ItemsCarrito': item_carrito,
+        'total': total_de_productos,
+        'total_price': total_price
+        })
+    
+
+    

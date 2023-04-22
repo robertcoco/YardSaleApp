@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="{% static 'shop/register.css' %}" />
 {% endblock css_external %} {% comment %} Creating form for the user register
 view {% endcomment %} {% block box %}
-<form class="form" action="{% url 'shop:login' %}" method="POST">
+<form class="form" action="{% url 'shop:register' %}" method="POST">
   {% csrf_token %}
   <div class="fill">
     <div class="circle"></div>
@@ -63,17 +63,7 @@ view {% endcomment %} {% block box %}
     <label for="password2">password confirmation</label>
     <input class="form-control" type="password" name="password2" id="" />
   </div>
-  <button type="submit" class="btn btn-primary">register</button>
-  <a
-    class="register_facebook btn btn-primary"
-    href="{% url 'social:begin' 'facebook' %}"
-    >Register with facebook
-  </a>
-  <a
-    class="register_facebook btn btn-primary"
-    href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'shop:login' %}"
-    >Register with google
-  </a>
+  <button type="submit" class="btn btn-primary">register</button>    
   <div>
     <a class="sign_up" href="{% url 'shop:login' %}"
       >Do you have an account already?. Login</a

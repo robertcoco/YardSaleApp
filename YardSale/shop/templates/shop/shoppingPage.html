@@ -1,8 +1,11 @@
 {% load static %}
-<aside id="shoppingCart" class="inactive">
+{% include 'shop/header.html' %}
+<body>
+{% include 'shop/shoppingCart.html' %}
+<div id="shoppingCart1" >
   <div class="title-container">
     <img src="{% static 'shop/icons/flechita.svg' %}" alt="arrow" />
-    <p class="title"><a href="{% url 'shop:shopping' %}">My order</a></p>
+    <p class="title">My orders</p>
   </div>
 
   <div class="my-order-content">
@@ -15,8 +18,8 @@
         />
       </figure>
       <p>{{item.producto.name}}</p>
-      <p>{{item.producto.price}}</p>
-      <form class = "delete_product" method="post" action="{% url 'shop:eliminar_item' %}">
+      <p>${{item.producto.price}}</p>
+      <form class = "DeleteForm" method="post" action="{% url 'shop:eliminar_item' %}">
         {% csrf_token %}
         <input type="hidden" name="item_id" value="{{ item.id }}">
         <button class="buttonForm" type="submit">
@@ -25,6 +28,9 @@
       </form>
     </div>
     {% endfor %}
-      <button class="primary-button">Checkout</button>
+      <div class = "total"><p>Total price</p><p>{{total_price}}</p></div>
   </div>
-</aside>
+</div>
+<script src="{% static 'shop/main.js' %}"></script>
+</body>
+</html>

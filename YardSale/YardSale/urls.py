@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from shop.views import GoogleLoginCallbackView
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("shop/", include("shop.urls")),
-    path('social-auth/', include('social_django.urls', namespace='social')),
+    path('accounts/', include('allauth.urls')),
+    path('accounts/password/reset/', auth_views.PasswordResetView.as_view(), name='account_reset_password'),
+    path('accounts/password/reset/done/', auth_views.PasswordResetDoneView.as_view(), name='account_reset_password_done'),
+    path('accounts/password/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='account_reset_password_confirm'),
+    path('accounts/password/done/', auth_views.PasswordResetCompleteView.as_view(), name='account_reset_password_complete'),
+
 ]

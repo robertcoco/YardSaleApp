@@ -1,5 +1,7 @@
 {% extends 'shop/header.html' %}
 {% load static %}
+{% load socialaccount %}
+
 
 {% block css_external %}
     <link rel="stylesheet" href="{% static 'shop/login.css' %}">
@@ -27,6 +29,7 @@
         <label for="exampleInputPassword1" class="form-label">Password</label>
         <input type="password" class="form-control" name = "password" id="exampleInputPassword1">
         </div>
+        <a href="{% provider_login_url 'google' %}">Login with Google</a>
         <button type="submit" class="btn btn-primary">Login</button>
         <div>
             <a class= "sign_up" href="{% url 'shop:register' %}">Sign up</a>

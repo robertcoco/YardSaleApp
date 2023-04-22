@@ -4,10 +4,30 @@
   {% include 'shop/shoppingCart.html' %}
   
   {% if user.is_authenticated %}
-  <h3>Hello: {{user.username}}</h3>
+  {% if messages %}
+  <div class="p-2">
+    {% for message in messages %}
+      <div class="text-center border-bottom">{{message}}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
   {% endif %}
 
   <section class="main-container">
+    <form class = "navigator" method="GET">
+      <input class = "key_word" type="text" name="q" placeholder="Buscar productos...">
+      <button class = "search" type="submit"><img src="{% static 'shop/icons/magnifier.png' %}" alt=""></button>
+    </form>
+    {% if product_list %}
+    <div class="cards-container">
+      {% for product in product_list %}
+      <!-- Código HTML para mostrar el producto -->
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>No se encontraron productos</p>
+    {% endif %}
+  
     {% if product_list %}
       <div class="cards-container">
 
@@ -31,7 +51,7 @@
               <input type="hidden" name="username" value = "{{user.username}}">
               <figure>
                 <button>
-                  <img src="{% static 'shop/icons/bt_add_to_cart.svg' %}" alt="close">
+                  <img src="{% static 'shop/icons/bt_add_to_cart.svg' %}" alt="add">
                 </button>
               </figure>
             </form>

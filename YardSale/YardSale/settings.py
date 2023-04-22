@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*7ok#@f-ss5kdhh+guwilx9x21p1yh^^3&9sded=$qm#v8+zn4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -39,8 +39,33 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'allauth.socialaccount.providers.google',
+
+    'crispy_forms',
+
+
 ]
 
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,7 +75,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
     'shop.middleware.LoginRequiredMiddleware'
 ]
 
@@ -59,7 +83,7 @@ ROOT_URLCONF = 'YardSale.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/ 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,19 +91,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',  # <-- Here
-                'social_django.context_processors.login_redirect', # <-- Here
+                
             ],
         },
     },
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.facebook.FacebookOAuth2',
-    'social_core.backends.twitter.TwitterOAuth',
-    'social_core.backends.github.GithubOAuth2',
-    'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 
@@ -95,6 +115,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 
 # Password validation
@@ -128,6 +149,7 @@ USE_I18N = True
 USE_TZ = True
 
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -136,9 +158,20 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# settings.py
+
+# Configuración del correo electrónico para enviar correos electrónicos de recuperación de contraseña
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'robertoangelabaddelossantos9@gmail.com'
+EMAIL_HOST_PASSWORD = 'knemncxtlbrwzrqc'
+DEFAULT_FROM_EMAIL = 'robertoangelabaddelossantos9@gmail.com'
+
 
 from django.contrib.messages import constants as messages
+
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-secondary',
         messages.INFO: 'alert-info',
@@ -147,11 +180,12 @@ MESSAGE_TAGS = {
         messages.ERROR: 'alert-danger',
 }
 
-LOGIN_URL = 'login'
+# settings.py
+LOGIN_URL = '/shop/'
+LOGIN_REDIRECT_URL = '/shop/' # 'home' es la url de la página a la que se redirigirá después de iniciar sesión exitosamente
+LOGOUT_REDIRECT_URL = '/accounts/login'
 SOCIAL_AUTH_FACEBOOK_KEY = '1020885318881585'  # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = 'd1c41757543f8bea48deecfbbc383562'  # App Secret
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '832957171751-v3htrqpna63n7hikp3q11odem1uvhkhk.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {'prompt': 'select_account','auth_type': 'request'}
 
